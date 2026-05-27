@@ -39,3 +39,6 @@ coverage.xml
 # No committed lockfile (avoids pinning the heavy [physics]/[hub] transitive closure
 # and the unfixable transitive CVEs that come with it). Run `uv lock` locally if needed.
 uv.lock
+
+# Internal autonomous-build resume state (local only; not part of the public package)
+.tracecal-progress.json
