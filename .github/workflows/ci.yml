@@ -59,6 +59,17 @@ jobs:
       - run: uv pip install -e ".[test,physics]"
       - run: uv run pytest tests/physics -q -m physics
 
+  # Hub loader: parse a self-written minimal v3 parquet layout via pyarrow (no network).
+  hub:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - run: uv venv --python 3.12
+      - run: uv pip install -e ".[test,hub]"
+      - run: uv run pytest tests/integration -q -m hub
+
   # Independent build/install smoke (wheel import in a clean venv).
   build:
     needs: lint

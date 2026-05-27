@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!-- Hand-authored synthetic 2-DOF revolute arm. NOT derived from any manufacturer model.
+     Exists only to exercise the URDF parser / joint-limit gate offline (Apache-2.0). -->
+<robot name="synth_2dof">
+  <link name="base"/>
+  <link name="link1"/>
+  <link name="link2"/>
+  <joint name="j1" type="revolute">
+    <parent link="base"/>
+    <child link="link1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.5708" upper="1.5708" velocity="2.0" effort="10.0"/>
+  </joint>
+  <joint name="j2" type="revolute">
+    <parent link="link1"/>
+    <child link="link2"/>
+    <origin xyz="0 0 0.5" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.1416" upper="3.1416" velocity="3.0" effort="10.0"/>
+  </joint>
+</robot>
