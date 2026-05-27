@@ -3,8 +3,8 @@
   "product": "tracecal",
   "repo_slug": "hinanohart/tracecal",
   "protocol_version": "1.0",
-  "current_step": "S10",
-  "completed_steps": ["S0", "S0.5", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9"],
+  "current_step": "S11-pypi-pending",
+  "completed_steps": ["S0", "S0.5", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10-except-pypi", "S11-github-side"],
   "step_attempts": 0,
   "decisions": {
     "public_name": "tracecal",
@@ -41,8 +41,9 @@
   },
   "measured": {"conformal_coverage": 0.897, "target_coverage": 0.9, "ece": 0.045, "physics_caught_rate": 1.0, "nontrivial_abstention": true, "dataset": {"n": 50, "mode": "live", "source": "lerobot/pusht"}, "results_path": "results/", "reproduced_in_clean_clone": false, "note": "gate=synthetic adversarial traj on REAL Panda URDF(robot_descriptions), 10/10 violations->Q=0. calibration=synthetic exchangeable, 80 trials, empirical 0.897 vs target 0.9, isotonic ECE 0.045 (disclaimer). real=lerobot/pusht 50ep all degrade-first-class(unmapped robot_type->hold, coverage=None, mode=live)=real Hub degrade demonstration. industrial-arm-dataset live gate firing deferred to v0.1.1(honest)"},
   "critic": {"verdict": "SHIP-OK-WITH-NITS", "rounds": 1, "blockers_open": [], "verdict_path": "transcript+progress", "agents": ["architect", "critic", "verifier", "omc-code-reviewer"], "summary": "4-agent gate (user monitoring topology): architect(fidelity)=SHIP-OK-WITH-NITS no blockers (moat live-verified), critic(honesty)=SHIP-OK (numbers byte-traceable), omc(adversarial)=SHIP-OK-WITH-NITS (all boundaries fail-closed), verifier(meta)=SHIP-OK-WITH-NITS MONITORS-FUNCTIONED:yes. nits applied: production-ready banned, verify_step Q numeric guard, crosscheck CI job added. verifier checkout@v6 concern=false-alarm (foldconsensus precedent green). architect nit#1 already-satisfied by test_api_physics."},
-  "publish": {"name_checked": true, "repo_created": false, "branch_protected": false, "tagged": false, "released": false, "pypi_published": false},
-  "checklist": {"S0": true, "S0_5": true, "S1": true, "S2": true, "S3": true, "S4": true, "S5": true, "S6": true, "S7": true, "S8": true, "S9": true, "S10": false, "S11": false},
+  "publish": {"name_checked": true, "repo_created": true, "branch_protected": true, "tagged": true, "released": true, "pypi_published": false, "pypi_blocker": "403 Forbidden: ~/.pypirc [pypi] token is project-scoped (PyPI tracecal=404 new project); cannot create a new project. Needs an ACCOUNT-scoped PyPI token. On receipt: cd ~/tracecal && uvx twine upload dist/* (or set PYPI_TOKEN/UV_PUBLISH_TOKEN). dist/ already built+twine-check PASSED."},
+  "checklist": {"S0": true, "S0_5": true, "S1": true, "S2": true, "S3": true, "S4": true, "S5": true, "S6": true, "S7": true, "S8": true, "S9": true, "S10": "all-except-pypi", "S11": "github-side-done-pypi-pending"},
+  "s10_s11_note": "REPO PUBLIC+Apache-2.0 (gh /license confirms; repo-view licenseInfo lag=cosmetic). CI 11/11 GREEN (lint/physics/hub/crosscheck/build + core-unit 6 matrix ubuntu/macos/windows x 3.11/3.12). branch protected (required checks match job names, force_push/deletions off, enforce_admins off solo). release v0.1.0a1 prerelease=true. dependabot/wiki-off/topics done. clean clone from GitHub: install+CLI selftest+tests green+metric reproduced bit-for-bit (gate 1.0, empirical 0.897188, ece 0.045101) -> reproduced_in_clean_clone TRUE. 0 open issues/PRs. 2 historical CI failures=pre-mypy-fix (superseded by green HEAD). DoD 12/13 done; ONLY #11 PyPI blocked on project-scoped token.",
   "s8_s9_note": "S8 4-agent gate PASS (no blockers, monitors functioned). S9 local CI-equivalence: all 6 jobs validated locally (lint ruff/mypy/marketing, core-unit unit+integration, physics, hub, crosscheck, build uv-build+import). GitHub gh run list confirm at S10 post-push. checkout@v6/setup-uv@v7 valid (foldconsensus precedent).",
   "s7_note": "README all numbers JSON-traceable(1.00/0.90/0.045). honest-marketing gate OK. negative tests committed(missing disclaimer/untraceable number/overclaim all FAIL the gate)=teeth proven. 132 tests green",
   "s6_note": "3 artifacts in results/. verify_step S6 PASS. gate CLAIM demonstrated on REAL Panda URDF. real-mode degrade demonstrated on real Hub data(pusht). conformal non-trivial(coverage 0.897<1.0). README numbers to inject at S7: physics_caught_rate 1.00, target 0.90, empirical 0.90(0.897), ece 0.045",
@@ -56,5 +57,5 @@
   "circuit_breaker": {"max_attempts_per_step": 5, "critic_max_rounds": 3, "max_total_hours": 168},
   "pivot_history": [],
   "single_session_lock": {"owner_session": "current-OSS開始-session-2026-05-28", "note": "別Claudeセッション非接触前提。検証はgit show HEAD+live実行(WSL read-coherence lag)"},
-  "human_pause": {"paused": false, "reason": null, "since": null}
+  "human_pause": {"paused": true, "reason": "DoD#11 PyPI publish blocked: ~/.pypirc token is project-scoped, 403 on new-project create. Need an account-scoped PyPI token (only the user can mint it). All other DoD items complete. Resume on receipt of a working token = single command: cd ~/tracecal && uvx twine upload dist/* (dist already built+twine-check PASSED). Protocol human-pause condition #4.", "since": "2026-05-28"}
 }
