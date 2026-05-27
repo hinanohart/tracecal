@@ -193,10 +193,13 @@ def validate_s6_artifacts(named_datas: list[tuple[str, dict]]) -> None:
             raise StepFailure(f"{name}: real/live-mode results require data_provenance")
         demo = data.get("gate_demonstration")
         if demo is not None:
+            q = demo.get("Q")
             fired = (
                 demo.get("gated_out") is True
                 and demo.get("hard_valid") is False
-                and float(demo.get("Q", -1.0)) == 0.0
+                and isinstance(q, (int, float))
+                and not isinstance(q, bool)
+                and float(q) == 0.0
             )
             if not fired:
                 raise StepFailure(

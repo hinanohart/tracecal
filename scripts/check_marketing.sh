@@ -12,7 +12,7 @@ CAL="$ROOT/results/calibration_v0.1.0a1.json"
 fail=0
 
 # 1) No overclaim phrases in README (ERE alternation, case-insensitive).
-BANNED='world.?s first|first[ -]ever|the only (tool|harness|framework|library|method|way)|完全に自動|完全自動|永続的|fully automatic|guarantees? (correctness|validity|safety)|state-of-the-art|beats all'
+BANNED='world.?s first|first[ -]ever|the only (tool|harness|framework|library|method|way)|完全に自動|完全自動|永続的|fully automatic|guarantees? (correctness|validity|safety)|state-of-the-art|beats all|production[- ]ready|battle[- ]tested'
 if grep -niE "$BANNED" "$README"; then
   echo "FAIL: overclaim phrase found in README.md"; fail=1
 fi

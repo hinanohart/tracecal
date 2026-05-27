@@ -70,6 +70,19 @@ jobs:
       - run: uv pip install -e ".[test,hub]"
       - run: uv run pytest tests/integration -q -m hub
 
+  # Conformal cross-check: the in-house split-conformal p-values must match crepes (and PAVA
+  # must match sklearn) to machine precision. Exercises the moat's correctness in CI, not just
+  # locally — without this the crosscheck tests would importorskip and silently never run.
+  crosscheck:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - run: uv venv --python 3.12
+      - run: uv pip install -e ".[test,crosscheck]"
+      - run: uv run pytest tests/unit -q -m crosscheck
+
   # Independent build/install smoke (wheel import in a clean venv).
   build:
     needs: lint
