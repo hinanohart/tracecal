@@ -1,0 +1,71 @@
+name: ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash -euo pipefail {0}
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - run: uv venv --python 3.12
+      - run: uv pip install -e ".[test]"
+      - run: uv run ruff check src tests scripts
+      - run: uv run mypy
+      - name: honest-marketing gate
+        run: bash scripts/check_marketing.sh
+
+  # Core: GPU-free, network-free calibration math + physics gate over hand-authored
+  # synthetic URDF fixtures and synthetic LeRobot-v3 episodes. Required on every OS.
+  core-unit:
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.11", "3.12"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - run: uv venv --python ${{ matrix.python }}
+      - run: uv pip install -e ".[test]"
+      - run: uv run pytest tests/unit tests/integration -q
+
+  # Physics: URDF joint-limit gate via yourdfpy over the offline synthetic fixtures
+  # (no manufacturer URDF download, no network). Required, ubuntu only.
+  physics:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - run: uv venv --python 3.12
+      - run: uv pip install -e ".[test,physics]"
+      - run: uv run pytest tests/physics -q -m physics
+
+  # Independent build/install smoke (wheel import in a clean venv).
+  build:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+      - run: uv build
+      - run: uv venv --python 3.12
+      - run: uv run --no-project --with dist/*.whl python -c "import tracecal; print(tracecal.__version__)"
