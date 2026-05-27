@@ -56,3 +56,13 @@ def is_known_no_urdf(robot_type: str) -> bool:
     """True for embodiments we know have no resolvable URDF (gives a precise degrade reason)."""
     norm = normalize_robot_type(robot_type)
     return any(k.replace("-", "") in norm for k in _KNOWN_NO_URDF)
+
+
+def iter_registry() -> tuple[tuple[str, str], ...]:
+    """Public view of the (robot_type-substring → module) mappings (for the CLI listing)."""
+    return _REGISTRY
+
+
+def known_no_urdf_keys() -> tuple[str, ...]:
+    """Public view of embodiment keys known to have no resolvable URDF (degrade-first-class)."""
+    return tuple(sorted(_KNOWN_NO_URDF))

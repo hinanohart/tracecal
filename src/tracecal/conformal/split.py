@@ -13,6 +13,7 @@ foldgauge cluster-grouped splitter (cluster_id → embodiment_id).
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 
 import numpy as np
@@ -43,7 +44,7 @@ def naive_split(
 
 
 def grouped_split(
-    group_ids: list[str | None], *, holdout_fraction: float = 0.3, seed: int = 0
+    group_ids: Sequence[str | None], *, holdout_fraction: float = 0.3, seed: int = 0
 ) -> tuple[np.ndarray, np.ndarray]:
     """Split whole embodiment groups into calibration/holdout. Raises if any id is missing."""
     if any(g is None for g in group_ids):
@@ -75,7 +76,7 @@ def grouped_split(
 
 
 def make_split(
-    group_ids: list[str | None],
+    group_ids: Sequence[str | None],
     *,
     group_by_embodiment: bool,
     holdout_fraction: float = 0.3,

@@ -15,6 +15,28 @@ without a resolvable URDF (e.g. SO-101 / Koch / LeKiwi) are handled in degrade-f
 mode (physics-skipped, ``coverage=None``, verdict ``hold``) — never silently "validated".
 """
 
+from typing import TYPE_CHECKING
+
 __version__ = "0.1.0a1"
 
-__all__ = ["__version__"]
+if TYPE_CHECKING:  # give type checkers the real signatures; runtime stays lazy via __getattr__
+    from tracecal.api import evaluate_dataset as evaluate_dataset
+    from tracecal.schema import CoverageReport as CoverageReport
+    from tracecal.schema import DatasetReport as DatasetReport
+    from tracecal.schema import EpisodeVerdict as EpisodeVerdict
+
+
+def __getattr__(name: str) -> object:
+    # Lazy re-export so `import tracecal` stays light (no numpy/pipeline import at module load).
+    if name == "evaluate_dataset":
+        from tracecal.api import evaluate_dataset
+
+        return evaluate_dataset
+    if name in ("DatasetReport", "EpisodeVerdict", "CoverageReport"):
+        import tracecal.schema as schema
+
+        return getattr(schema, name)
+    raise AttributeError(f"module 'tracecal' has no attribute {name!r}")
+
+
+__all__ = ["__version__", "evaluate_dataset", "DatasetReport", "EpisodeVerdict", "CoverageReport"]
