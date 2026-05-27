@@ -143,7 +143,10 @@ def load_local(
     success_cols: dict[int, list[Any]] = {}
     label_source: str | None = None
     for pf in parquet_files:
-        table = pq.read_table(pf)  # type: ignore[no-untyped-call]  # pyarrow is untyped
+        # pyarrow ships py.typed but read_table is effectively untyped; route through Any so
+        # strict mypy is satisfied whether or not pyarrow is installed in the checking env.
+        read_table: Any = pq.read_table
+        table = read_table(pf)
         cols = table.column_names
         if state_key not in cols or "episode_index" not in cols:
             continue
