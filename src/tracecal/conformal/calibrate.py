@@ -251,6 +251,10 @@ def expected_calibration_error(probs: np.ndarray, labels: np.ndarray, *, n_bins:
         raise ValueError("empty input.")
     if n_bins < 1:
         raise ValueError("n_bins must be >= 1.")
+    # ECE is only meaningful for probabilities; a public diagnostic must reject out-of-range
+    # input rather than silently binning, say, 1.5 into the top bin and reporting a number.
+    if float(p.min()) < 0.0 or float(p.max()) > 1.0:
+        raise ValueError("probabilities must lie in [0, 1].")
     edges = np.linspace(0.0, 1.0, n_bins + 1)
     # clip so prob==1.0 lands in the last bin
     idx = np.clip(np.digitize(p, edges[1:-1], right=False), 0, n_bins - 1)

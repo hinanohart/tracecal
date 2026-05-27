@@ -223,6 +223,11 @@ def check_S6() -> None:
     validate_s6_artifacts(named_datas)
 
 
+# This harness covers the phases that have local, machine-checkable artifacts (S0.5–S6).
+# Later phases are gated outside this file by design: S7 (honest-marketing) by
+# scripts/check_marketing.sh, S8 by the multi-agent critic gate, and S9–S11 by live GitHub
+# state (CI conclusion, branch protection, release, clean-clone repro) — none of which is a
+# local assertion this script can make.
 _CHECKS = {
     "S0.5": check_S0_5,
     "S0_5": check_S0_5,

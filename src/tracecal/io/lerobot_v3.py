@@ -14,6 +14,7 @@ lazily; the in-memory :func:`from_arrays` path needs none of it.
 from __future__ import annotations
 
 import json
+import warnings
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -175,7 +176,16 @@ def load_local(
     out: list[tuple[str, np.ndarray, float | None]] = []
     for e in episode_ids:
         frames = sorted(by_ep[e], key=lambda t: t[0])
-        positions = np.stack([row for _, row in frames], axis=0)
+        try:
+            positions = np.stack([row for _, row in frames], axis=0)
+        except ValueError:
+            # Ragged per-frame state widths in a malformed dataset: skip this one episode with
+            # a warning rather than aborting the whole load (degrade-first-class, not fail-hard).
+            warnings.warn(
+                f"episode {e}: inconsistent per-frame state widths; skipping this episode.",
+                stacklevel=2,
+            )
+            continue
         label, _ = detect_episode_label(
             {label_source: np.asarray(success_cols.get(e, []))} if label_source else {},
         )

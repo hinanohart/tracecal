@@ -7,6 +7,7 @@ from hypothesis import given, settings
 from hypothesis import strategies as st
 
 from tracecal.conformal.calibrate import fit_split_conformal
+from tracecal.conformal.coverage import coverage_indicators
 
 _floats = st.floats(min_value=-1e3, max_value=1e3, allow_nan=False, allow_infinity=False)
 
@@ -59,3 +60,29 @@ def test_fit_is_deterministic(cal) -> None:
     a = fit_split_conformal(s, y, score_key="v", alpha=0.1).predict_p(np.array([0.0, 0.5]))
     b = fit_split_conformal(s, y, score_key="v", alpha=0.1).predict_p(np.array([0.0, 0.5]))
     np.testing.assert_array_equal(a, b)
+
+
+def test_empirical_marginal_coverage_holds_in_house() -> None:
+    """The central guarantee, self-verified without the optional crepes cross-check.
+
+    Under exchangeability, split-conformal prediction sets cover the true label with
+    probability >= 1 - alpha marginally. We pool the holdout coverage over many independent
+    exchangeable draws and assert the empirical rate is at least 1 - alpha (within a small
+    finite-sample slack). This is the value-level proof of the core claim that otherwise lives
+    only behind the `crosscheck` extra (tests/unit/test_crosscheck.py).
+    """
+    alpha = 0.1
+    covered: list[bool] = []
+    for seed in range(120):
+        rng = np.random.default_rng(seed)
+        n = 400
+        y = rng.integers(0, 2, size=n).astype(float)
+        scores = y + rng.normal(0.0, 1.0, size=n)  # exchangeable, informative score
+        n_cal = n // 2
+        m = fit_split_conformal(scores[:n_cal], y[:n_cal], score_key="v", alpha=alpha)
+        sets = m.predict_set(scores[n_cal:], alpha=alpha)
+        covered.extend(bool(c) for c in coverage_indicators(sets, y[n_cal:]))
+    empirical = float(np.mean(covered))
+    # ~24k pooled holdout points: the 1-alpha guarantee holds with a small slack for noise.
+    assert empirical >= (1.0 - alpha) - 0.02, f"empirical coverage {empirical:.4f} < target"
+    assert empirical <= 1.0

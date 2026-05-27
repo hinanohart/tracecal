@@ -177,9 +177,9 @@ def measure_real(repo_id: str) -> dict:
             "reference_mode": report.coverage is None,
         },
         "embodiments": {k: s.source for k, s in report.embodiments.items()},
-        "provenance": _provenance(
-            "live", {"source": report.source if hasattr(report, "source") else repo_id}
-        ),
+        # DatasetReport carries no `source` field (that lives on the loaded dataset, not the
+        # report); the provenance source is the repo id we were asked to evaluate.
+        "provenance": _provenance("live", {"source": repo_id}),
     }
 
 
