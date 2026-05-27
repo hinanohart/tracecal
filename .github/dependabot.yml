@@ -1,0 +1,25 @@
+version: 2
+updates:
+  # Python deps (uv ecosystem). Core runtime is numpy + scipy + pydantic only; the heavier
+  # bits (yourdfpy/robot_descriptions, pyarrow/huggingface_hub, crepes/scikit-learn) live behind
+  # optional extras. Version-update PRs are disabled (limit 0) on purpose: on this pre-alpha they
+  # add churn and several floor bumps fail to resolve against the optional extras, producing red
+  # PRs for no functional gain. CI pins the floors it needs; automated security fixes still run
+  # and honor the ignore list so un-actionable transitive deps stop generating recurring red runs.
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
+    ignore:
+      - dependency-name: "trimesh"
+      - dependency-name: "scikit-learn"
+      - dependency-name: "pyarrow"
+      - dependency-name: "scipy"
+
+  # Keep CI actions current; a stale moving action tag can cause a transient red CI run.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
