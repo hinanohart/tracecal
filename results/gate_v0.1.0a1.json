@@ -1,0 +1,32 @@
+{
+  "mode": "synthetic",
+  "disclaimer": "Adversarial SYNTHETIC joint trajectory evaluated against a REAL Franka Panda URDF. The trajectory is synthetic because a physical robot does not violate its own joint limits; this demonstrates the gate logic (algorithm validation only), not a measured failure rate of any real dataset.",
+  "data_provenance": "robot_descriptions:panda_description",
+  "embodiment": {
+    "robot_type": "panda",
+    "dof": 9,
+    "source": "robot_descriptions:panda_description"
+  },
+  "gate_demonstration": {
+    "gated_out": true,
+    "hard_valid": false,
+    "Q": 0.0,
+    "physics_caught_rate": 1.0
+  },
+  "summary": {
+    "n_clean": 10,
+    "n_violating": 10,
+    "n_gated_out_on_violation": 10,
+    "physics_caught_rate": 1.0
+  },
+  "provenance": {
+    "tool": "tracecal",
+    "version": "0.1.0a1",
+    "python": "3.12.3",
+    "os": "Linux",
+    "date": "2026-05-28",
+    "seed": "0",
+    "mode": "synthetic",
+    "urdf": "robot_descriptions:panda_description"
+  }
+}

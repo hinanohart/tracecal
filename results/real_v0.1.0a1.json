@@ -1,0 +1,26 @@
+{
+  "mode": "live",
+  "data_provenance": "lerobot/pusht",
+  "summary": {
+    "n_episodes": 50,
+    "n_accept": 0,
+    "n_hold": 50,
+    "n_reject": 0,
+    "n_degraded": 50,
+    "coverage": null,
+    "reference_mode": true
+  },
+  "embodiments": {
+    "unknown": "degraded:unmapped-robot-type"
+  },
+  "provenance": {
+    "tool": "tracecal",
+    "version": "0.1.0a1",
+    "python": "3.12.3",
+    "os": "Linux",
+    "date": "2026-05-28",
+    "seed": "0",
+    "mode": "live",
+    "source": "lerobot/pusht"
+  }
+}

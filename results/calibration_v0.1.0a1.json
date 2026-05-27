@@ -1,0 +1,17 @@
+{
+  "mode": "synthetic",
+  "disclaimer": "Synthetic exchangeable (score, label) data; algorithm validation only. Real-dataset conformal coverage requires real binary validity labels (reference-mode otherwise).",
+  "target_coverage": 0.9,
+  "empirical_coverage": 0.8971875,
+  "n_trials": 80,
+  "ece": 0.04510108326903464,
+  "provenance": {
+    "tool": "tracecal",
+    "version": "0.1.0a1",
+    "python": "3.12.3",
+    "os": "Linux",
+    "date": "2026-05-28",
+    "seed": "0",
+    "mode": "synthetic"
+  }
+}
