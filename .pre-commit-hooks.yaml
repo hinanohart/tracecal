@@ -1,0 +1,18 @@
+# Use tracecal as a pre-commit hook to audit a LeRobot dataset before committing it.
+# Because a dataset audit is not a per-file check, this hook is manual-stage and takes the
+# dataset path/repo-id as an arg. Example consumer .pre-commit-config.yaml:
+#
+#   - repo: https://github.com/hinanohart/tracecal
+#     rev: v0.1.0a1
+#     hooks:
+#       - id: tracecal
+#         args: ["path/to/dataset", "--confidence", "0.9", "--physics", "auto"]
+#
+# Then run on demand:  pre-commit run tracecal --hook-stage manual
+- id: tracecal
+  name: tracecal LeRobot dataset audit
+  description: Audit a LeRobot dataset's URDF kinematic validity and calibrated coverage.
+  entry: tracecal run
+  language: python
+  pass_filenames: false
+  stages: [manual]
