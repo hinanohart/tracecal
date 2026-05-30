@@ -109,8 +109,8 @@ def check_S0_5() -> None:
     ):
         _require_file(rel)
     license_text = (ROOT / "LICENSE").read_text(encoding="utf-8")
-    if "Apache License" not in license_text or "Version 2.0" not in license_text:
-        raise StepFailure("LICENSE is not the full Apache-2.0 text")
+    if "MIT License" not in license_text:
+        raise StepFailure("LICENSE is not the full MIT text")
     _require_import("tracecal")
     _ok("S0.5 scaffold verified")
 
