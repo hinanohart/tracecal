@@ -8,7 +8,7 @@ dynamic = ["version"]
 description = "Conformal-calibrated, URDF physics-gated validity & abstention auditing for LeRobot robot-learning datasets"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
-license = { text = "Apache-2.0" }
+license = { text = "MIT" }
 authors = [{ name = "hinanohart" }]
 keywords = [
     "lerobot", "robot-learning", "dataset-quality", "conformal-prediction",
@@ -17,7 +17,7 @@ keywords = [
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: Apache Software License",
+    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -73,7 +73,7 @@ path = "src/tracecal/__init__.py"
 packages = ["src/tracecal"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/tracecal", "tests", "scripts", "results", "examples", "LICENSE", "NOTICE", "README.md"]
+include = ["src/tracecal", "tests", "scripts", "results", "examples", "LICENSE", "README.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

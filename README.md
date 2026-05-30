@@ -20,7 +20,7 @@ This is deliberately **not** a CV/heuristic quality scorer like
 [`score_lerobot_episodes`](https://github.com/RoboticsData/score_lerobot_episodes) (blur, motion
 smoothness, optional VLM checks) or a motion-consistency filter — those are complementary.
 tracecal's value is a *physically grounded, distribution-free* validity gate with explicit
-abstention. GPU-free, torch-free at runtime, Apache-2.0.
+abstention. GPU-free, torch-free at runtime, MIT.
 
 > **Scope (honest).** The physics-gate claim targets **industrial-arm** datasets — fewer in number
 > on the Hub but the largest by episode volume (professional labs). Hobbyist arms run in degrade
@@ -100,5 +100,5 @@ load v3 episodes ─▶ resolve embodiment URDF ─▶ kinematic gate ─▶ con
 
 ## License
 
-Apache-2.0. See `LICENSE` and `NOTICE` (third-party / URDF source license matrix). tracecal bundles
+MIT. See `LICENSE` and `NOTICE` (third-party / URDF source license matrix). tracecal bundles
 no manufacturer URDF, dataset, or model weights.
